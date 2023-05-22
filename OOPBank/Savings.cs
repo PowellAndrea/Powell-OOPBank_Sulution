@@ -20,7 +20,5 @@ namespace OOPBank
             _accountNumber = accountNumber;
             _balance = 0;
         }
-
-
     }
 }

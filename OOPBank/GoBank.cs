@@ -33,25 +33,24 @@ bool doStuff(bool Continue)
 {
     switch (Console.ReadLine())
     {
-        
         case "1":   // Deposit to Savings
             {
-                doTransaction(Savings, "Deposit");
+                Savings.Deposit(GetAmount("Deposit"));
                 break;
             }
         case "2":   // Deposit to Checking
             {
-                doTransaction(Checking, "Deposit");
+                Checking.Deposit(GetAmount("Deposit"));
                 break;
             }
         case "3":   // Withdraw from Savings
             {
-                doTransaction(Savings, "Withdraw");
+                Savings.Withdraw(GetAmount("Withdraw"));
                 break;
             }
         case "4":   // Withdraw from Checking
             {
-                doTransaction(Checking, "Withdrawl");
+                Checking.Withdraw(GetAmount("Withdraw"));
                 break;
             }
         case "5":   // Exit
@@ -63,33 +62,6 @@ bool doStuff(bool Continue)
             break;
     }
     return Continue;
-}
-
-
-void doTransaction(IAccount Account, string Action)
-{
-    Console.WriteLine(Account.showBalance());
-    switch (Action)
-    {
-        case "Deposit":
-            {
-                Account.Deposit(GetAmount(Action));
-                break;
-            }
-        case "Withdraw":
-            {
-                if (Account.Withdraw(GetAmount(Action)))
-                {
-                    Console.WriteLine(Account.showBalance());
-                }
-                else
-                {
-                    Console.WriteLine("Withdrawl over maximum amount");
-                }
-                break;
-            };
-    }
-    Console.WriteLine(Account.showBalance());
 }
 
 decimal GetAmount(string action)
