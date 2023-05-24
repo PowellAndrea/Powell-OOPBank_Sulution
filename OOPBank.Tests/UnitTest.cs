@@ -20,6 +20,15 @@ namespace OOPBank.Tests
             
         }
 
+
+        Customer customer = new("Andrea");
+
+
+        savings.Deposit(3000);
+checking.Deposit(2000);
+
+
+
         public void TestWithdrawlOK()
         {
 

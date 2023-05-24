@@ -1,23 +1,13 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OOPBank
+﻿namespace OOPBank
 {
-    public class Checking : IAccount
+    public class Checking : Account
     {
-        public int _accountNumber { get; set; }
-        public decimal _balance { get; set; }
-        public decimal? MIN_Balance => 0;
+        private bool _odProtection;
+        public bool OdProtection { get { return _odProtection; } }
 
-        public Checking(int accountNumber)
+        public Checking(int customerID) : base(customerID)
         {
-            _accountNumber = accountNumber;
-            _balance = 0;
+            _odProtection = true;
         }
     }
 }

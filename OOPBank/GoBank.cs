@@ -1,29 +1,22 @@
 ﻿using OOPBank;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 bool Continue = true;
-Customer customer = new("Andrea");
-IAccount Savings = customer._savings;
-IAccount Checking = customer._checking;
+Bank bank = new();
 
-Savings.Deposit(3000);
-Checking.Deposit(2000);
+Customer c = new("Andrea");
+bank.addCustomer("Andrea"); // Includes Accounts
+bank.Deposit(c.Checking, 2000M);
+bank.Deposit(c.Savings, 3000M);
 
 
 while (Continue)
 {
     Console.WriteLine("\n\n\n");
     Console.WriteLine("Please select number 1-4 from the following:\n"
-    + "1 : Deposit to Savings\n"
-    + "2 : Deposit to Checking\n"
-    + "3 : Withdraw from Savings\n"
-    + "4 : Withdraw from Checking\n"
+    + "1 : Deposit to savings\n"
+    + "2 : Deposit to checking\n"
+    + "3 : Withdraw from savings\n"
+    + "4 : Withdraw from checking\n"
     + "5 : End");
 
     Continue = doStuff(Continue);
@@ -33,24 +26,28 @@ bool doStuff(bool Continue)
 {
     switch (Console.ReadLine())
     {
-        case "1":   // Deposit to Savings
+        case "1":   // Deposit to savings
             {
-                Savings.Deposit(GetAmount("Deposit"));
+                currentBalance(c.Savings);
+                bank.Deposit(c.Savings, GetAmount("Deposit"));
                 break;
             }
-        case "2":   // Deposit to Checking
+        case "2":   // Deposit to checking
             {
-                Checking.Deposit(GetAmount("Deposit"));
+                currentBalance(c.Checking);
+                bank.Deposit(c.Checking, GetAmount("Deposit"));
                 break;
             }
-        case "3":   // Withdraw from Savings
+        case "3":   // Withdraw from savings
             {
-                Savings.Withdraw(GetAmount("Withdraw"));
+                currentBalance(c.Savings);
+                bank.Withdraw(c.Savings, GetAmount("Withdraw"));
                 break;
             }
-        case "4":   // Withdraw from Checking
+        case "4":   // Withdraw from checking
             {
-                Checking.Withdraw(GetAmount("Withdraw"));
+                currentBalance(c.Checking);
+                bank.Withdraw(c.Checking, GetAmount("Withdraw"));
                 break;
             }
         case "5":   // Exit
@@ -64,6 +61,12 @@ bool doStuff(bool Continue)
     return Continue;
 }
 
+
+void currentBalance(Account account)
+{
+    Console.WriteLine("The current balance in your " + account.GetType().Name + " account is " + account.Balance.ToString("C"));
+}
+
 decimal GetAmount(string action)
 {
     Console.WriteLine("Enter the amount to " + action);
@@ -71,8 +74,11 @@ decimal GetAmount(string action)
     decimal amount;
     if (decimal.TryParse(strAmount, out amount))
     {
-        return amount;
-    }
+        if (action == "Withdraw")
+        {
+            return -amount;
+        } else { return amount; }
+      }
     else
     {
         Console.WriteLine("\n\nInvalid entry.  Enter an amount as 12.34 \t");
