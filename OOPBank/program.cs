@@ -69,6 +69,7 @@ void currentBalance(Account account)
 
 decimal GetAmount(string action)
 {
+    // Fix this - remove logic from program and put it back in the class
     Console.WriteLine("Enter the amount to " + action);
     string strAmount = Console.ReadLine();
     decimal amount;

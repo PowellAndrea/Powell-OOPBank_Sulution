@@ -6,27 +6,147 @@ namespace OOPBank.Tests
     public class TestAccount
     {
         [TestMethod]
-        public void CanDepositToSavings()
+        public void CanGetOdFlag()
         {
-            Savings savings = new(1);
-            //Checking checking = new(1);
+            var mockCustomer = new Mock<Customer>("Andrea");
+            Account checking = new(mockCustomer.Object.ID);
+            Assert.IsNotNull(checking.ODProtection);
+        }
 
-            var mockCustomer = new Mock<Customer>();
-            mockCustomer.SetupProperty(e => e.ID, 1);
-            mockCustomer.SetupProperty(e => e.Savings, savings);
-            //mockCustomer.SetupProperty(e => e.Checking, checking);
+        [TestMethod]
+        public void SavingsOdOffByDefault()
+        {
+            var mockCustomer = new Mock<Customer>("Andrea");
+            Savings savings = new(mockCustomer.Object.ID);
+            Assert.IsFalse(savings.ODProtection);
+        }
 
-            Customer newCustomer = mockCustomer.Object;
-            savings.Deposit(200M);
+        [TestMethod]
+        public void AccountDefaultMinIs0()
+        {
+            var mockCustomer = new Mock<Customer>("Andrea");
+            Account account = new(mockCustomer.Object.ID);
+            decimal min = account.MIN_Balance;
+            Assert.IsTrue(min == 0M);
+        }
+
+        [TestMethod]
+        public void SavingsMinimumBalance10()
+        {
+            var mockCustomer = new Mock<Customer>("Andrea");
+            Savings savings = new(mockCustomer.Object.ID);
+            decimal min = savings.MIN_Balance;
+            Assert.IsTrue(min == 10M);
+        }
+
+        [TestMethod]
+        public void CheckingOdOnByDefault()
+        {
+            var mockCustomer = new Mock<Customer>("Andrea");
+            Checking checking = new(mockCustomer.Object.ID);
+            Assert.IsTrue(checking.ODProtection);
+        }
+
+        [TestMethod]
+        public void CanTurnOnOverdraftProtection()
+        {
+            var mockCustomer = new Mock<Customer>("Andrea");
+            Account account = new(mockCustomer.Object.ID);
+            account.turnOnOd();
+            Assert.IsTrue(account.ODProtection);
+        }
+
+        [TestMethod]
+        public void CanTurnOffOverdraftProtection()
+        {
+            var mockCustomer = new Mock<Customer>("Andrea");
+            Account account = new(mockCustomer.Object.ID);
+            account.turnOffOd();
+            Assert.IsFalse(account.ODProtection);
+        }
+
+        [TestMethod]
+        public void CanGetBalance()
+        {
+            var mockCustomer = new Mock<Customer>("Andrea");
+            Account account = new(mockCustomer.Object.ID);
+            Assert.IsTrue(account.Balance == 0M);
+        }
+
+        [TestMethod]
+        public void CanGetAccountNumber()
+        {
+            var mockCustomer = new Mock<Customer>("Andrea");
+            Account account = new(mockCustomer.Object.ID);
+            int n = account.AccountNumber;
+            Assert.IsTrue(n == mockCustomer.Object.ID);
+        }
+
+        [TestMethod]
+        public void CanGetCustomerID()
+        {
+            var mockCustomer = new Mock<Customer>("Andrea");
+            int x = mockCustomer.Object.ID;
+            Account account = new(mockCustomer.Object.ID);
+            Assert.IsTrue(x == account.CustomerId);
+        }
+
+        [TestMethod]
+        public void CanDeposit()
+        {
+            var mockCustomer = new Mock<Customer>("Andrea");
+            Account account = new(mockCustomer.Object.ID);
+            account.Deposit(200M);
+            Assert.IsTrue(account.Balance == 200M);
+        }
+
+        [TestMethod]
+        public void CanWithdraw()
+        {
+            var mockCustomer = new Mock<Customer>("Andrea");
+            Account account = new(mockCustomer.Object.ID);
+            account.Deposit(200M);
+            account.Withdraw(50M);
+            Assert.IsTrue(account.Balance == 150M);
+        }
+
+        [TestMethod]
+        public void TestOverDraft()
+        {
+            var mockCustomer = new Mock<Customer>("Andrea");
+            int x = mockCustomer.Object.ID;
+            Checking checking = new(x);
+            Savings savings = new(x);
+
+            savings.Deposit(3000M);
+            checking.Deposit(2000M);
 
         }
 
         [TestMethod]
-        // here or bank?  Override Withdrawl action in Checking account?
-        public void CheckingHasOverdraftProtection()
+        public void TestWithdrawOverMinBalance()
         {
+            var mockCustomer = new Mock<Customer>("Andrea");
+            int x = mockCustomer.Object.ID;
+            Savings savings = new(x);
+            savings.Deposit(30);
+            savings.Withdraw(25);
+            Assert.ThrowsException<ArgumentException>(() => "Insufficent Funds");
 
         }
+
+        [TestMethod]
+        public void TestWithdrawNSF()
+        {
+            var mockCustomer = new Mock<Customer>("Andrea");
+            int x = mockCustomer.Object.ID;
+            Account account = new(x);
+            account.Deposit(50);
+            account.Withdraw(60);
+            Assert.ThrowsException<ArgumentException>(() => { });
+            // Test for NSF
+        }
+
 
 
     }

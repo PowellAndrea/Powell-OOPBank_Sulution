@@ -5,20 +5,14 @@ namespace OOPBank
     public class Bank
     {
         public string Name { get; }
-
         private List<Customer> _customers;
         public int CustomerCount(){ return _customers.Count(); }
 
         public Bank()
-        {
+        {          
             Name = "Solvent Bank";
             _customers = new List<Customer>();
         }
-
-        //public void addCustomer(string name) {
-        //    Customer newCustomer = new Customer(name);
-        //    _customers.Add(newCustomer);
-        //}
 
         public void addCustomer(Customer customer)
         {
@@ -42,26 +36,27 @@ namespace OOPBank
         // Needs more testing
         public void Withdraw(Account account, decimal amount)
         {
-            try
-            {
+            decimal testBalance = account.Balance - amount;
+            if (testBalance > account.MIN_Balance)
+            {   // normal case
                 account.Withdraw(amount);
             }
-            catch
+            else if (account.ODProtection)
             {
-                if (account.ODProtection)
+                Savings savings = getCustomer(account.CustomerId).Savings;
+                if (savings.Balance - savings.MIN_Balance > testBalance)
                 {
-                    // should I be able to grab the balance amount from exception thrown?
-                    decimal od = account.Balance - account.MIN_Balance - amount;
-                    Account s = getCustomer(account.CustomerId).Savings;
-                    if (s.Balance - s.MIN_Balance - od >= 0)
+                    if (!Transfer(savings, account, testBalance))
                     {
-                        if (Transfer(s, account, od))
-                        {
-                            account.Withdraw(amount);
-                        }
+                        throw new Exception("Transfer failed"); ;
                     }
                 }
+                else
+                {
+                    throw new Exception("Withdraw faild. Balance under minimum.");
+                }
             }
+            else throw new Exception("Insufficent Funds");
         }
 
         public bool Transfer(Account fromAccount, Account toAccount, decimal amount)
@@ -75,8 +70,6 @@ namespace OOPBank
                 Console.WriteLine("Unable to complete transfer.");
                 return false;
             }
-
-            toAccount.Deposit(amount);
             return true;
         }
     }

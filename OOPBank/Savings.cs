@@ -2,7 +2,7 @@
 {
     public class Savings : Account
     {
-        public new static decimal MIN_Balance = 10;
+        public new decimal MIN_Balance = 10;
 
         public Savings(int customerID) : base(customerID)
         {

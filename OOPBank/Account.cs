@@ -2,18 +2,22 @@
 {
     public class Account : IAccount
     {
+        public decimal MIN_Balance = 0;
+
         internal static int _accountNumber;
         public int AccountNumber { get { return _accountNumber; } }
 
         internal decimal _balance;
         public decimal Balance { get { return _balance; } }
-
-        public decimal MIN_Balance = 0;
+        
         internal int _customerId;
         public int CustomerId { get { return _customerId; } }
 
         private bool _odProtection = false;
         public bool ODProtection { get { return _odProtection; } }
+
+        public void turnOnOd() { _odProtection = true; }
+        public void turnOffOd() { _odProtection = false; }
 
         public Account(int customerID)
         {
@@ -30,14 +34,15 @@
 
         public void Withdraw(decimal amount)
         {
-            var newBalance = _balance + amount;
-            // hard limit on minimum balance
-            if (newBalance >= MIN_Balance) 
+            var newBalance = _balance - amount;
+            // hard limit on minimum balance, final check before withdrawl
+            if (newBalance >= MIN_Balance)
             {
                 _balance = newBalance;
-            } else {
-                throw new ArgumentOutOfRangeException(nameof(newBalance));
-            };
+            } else
+            {
+                throw new Exception("Insufficent Funds");
+            }
         }
 
         internal static int generateId()
