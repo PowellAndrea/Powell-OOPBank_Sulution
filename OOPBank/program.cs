@@ -4,7 +4,7 @@ bool Continue = true;
 Bank bank = new();
 
 Customer c = new("Andrea");
-bank.addCustomer("Andrea"); // Includes Accounts
+bank.addCustomer(c);
 bank.Deposit(c.Checking, 2000M);
 bank.Deposit(c.Savings, 3000M);
 

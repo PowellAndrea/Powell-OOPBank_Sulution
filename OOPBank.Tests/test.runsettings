@@ -2,8 +2,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<RunConfiguration>
 		<TestRunParameters>
-			<Parameter name="CUSTOMERNAME" value="Andrea" />
-			<Parameter name="docsUrl" value="https://learn.microsoft.com" />
 		</TestRunParameters>
 	</RunConfiguration>
 </Project>

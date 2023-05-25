@@ -2,8 +2,8 @@
 {
     public class Customer
     {
-        
-        public int CustomerID { get; set; }
+        private int Id;
+        public int ID { get { return Id; } }
 
         private string _name { get; set; }
         public string Name { get { return _name; } }
@@ -16,10 +16,10 @@
 
         public Customer(string name)
         {
-            CustomerID = generateId();
+            Id = generateId();
             _name = name;
-            _savings = new(CustomerID);
-            _checking = new(CustomerID);
+            _savings = new(Id);
+            _checking = new(Id);
         }
 
         static int generateId()

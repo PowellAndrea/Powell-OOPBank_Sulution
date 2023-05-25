@@ -1,23 +1,38 @@
 ﻿using Moq;
+using OOPBank;
+using System.Security.Cryptography.X509Certificates;
+using System.Security.Principal;
 
 namespace OOPBank.Tests
 {
     [TestClass]
-    internal class TestBank
+    public class TestBank
     {
         [TestMethod]
-        public void PreserveMinBalance()
+        public void CanAddNewCustomer()
         {
-
+            Bank bank = new Bank();
+            var mockCustomer = new Mock<Customer>("Andrea");
+            bank.addCustomer(mockCustomer.Object);
+            Assert.IsTrue(bank.CustomerCount() == 1);
         }
 
-        public void CheckingHasOverdraftProtection()
+        [TestMethod]
+        public void NewCustomerCanBeFoundByName()
         {
-
+            Bank bank = new Bank();
+            var mockCustomer = new Mock<Customer>("Andrea");
+            bank.addCustomer(mockCustomer.Object);
+            Assert.IsNotNull(bank.getCustomer("Andrea"));
         }
 
-
-        // check ArgumentNullException if customer not found in list
-
+        [TestMethod]
+        public void NewCustomerCanBeFoundByID()
+        {
+            Bank bank = new Bank();
+            var mockCustomer = new Mock<Customer>("Andrea");
+            bank.addCustomer(mockCustomer.Object);
+            Assert.IsNotNull(bank.getCustomer(0));
+        }
     }
 }

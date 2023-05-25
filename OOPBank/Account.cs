@@ -27,11 +27,17 @@
             _balance += amount;
         }
 
-        public bool Withdraw(decimal amount)
+
+        public void Withdraw(decimal amount)
         {
             var newBalance = _balance + amount;
-            if (newBalance >= MIN_Balance) { _balance= newBalance; return true; }
-            return false;
+            // hard limit on minimum balance
+            if (newBalance >= MIN_Balance) 
+            {
+                _balance = newBalance;
+            } else {
+                throw new ArgumentOutOfRangeException(nameof(newBalance));
+            };
         }
 
         internal static int generateId()
