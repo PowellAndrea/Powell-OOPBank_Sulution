@@ -37,10 +37,9 @@ namespace OOPBank
         public void Deposit(Account account, decimal amount)
         {
             account.Deposit(amount);
-            Console.WriteLine(string.Format(amount.ToString(), "C") + " has been deposited to your " + account.GetType().Name);
-            CurrentBalance(account);
         }
 
+        // Needs more testing
         public void Withdraw(Account account, decimal amount)
         {
             try
@@ -63,11 +62,6 @@ namespace OOPBank
                     }
                 }
             }
-        }
-
-        public static void CurrentBalance(Account account)
-        {
-            Console.WriteLine("The current balance in your " + account.GetType().Name + " is " + account.Balance.ToString("C"));
         }
 
         public bool Transfer(Account fromAccount, Account toAccount, decimal amount)

@@ -3,38 +3,35 @@
 namespace OOPBank.Tests
 {
     [TestClass]
-
-    internal class TestCustomer
+    public class TestCustomer
     {
         [TestMethod]
         public void NewCustomerHasChecking()
         {
             Customer customer = new("Andrea");
-
+            Assert.IsNotNull(customer.Checking);
         }
-
-       // var mockCustomer = new Mock<Customer>();
-        //mockCustomer.SetupProperty(e => e.ID, 1);
-        //    mockCustomer.SetupProperty(e => e.Savings, savings);
-        //    //mockCustomer.SetupProperty(e => e.Checking, checking);
-
-        //    Customer newCustomer = mockCustomer.Object;
-        //savings.Deposit(200M);
-
-
 
         [TestMethod]
         public void NewCustomerHasSavings()
         {
-
+            Customer customer = new("Andrea");
+            Assert.IsNotNull(customer.Savings);
         }
 
         [TestMethod]
         public void CanGetCustomerName()
         {
-
+            Customer customer = new("Andrea");
+            Assert.AreEqual(customer.Name, "Andrea");
         }
 
+        [TestMethod]
+        public void CustomerHasID()
+        {
+            Customer customer = new("Andrea");
+            Assert.IsNotNull(customer.ID);
+        }
 
     }
 }

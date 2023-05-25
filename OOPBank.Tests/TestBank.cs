@@ -33,5 +33,6 @@ namespace OOPBank.Tests
             bank.addCustomer(mockCustomer.Object);
             Assert.IsNotNull(bank.getCustomer(i).Name == "Andrea");
         }
+
     }
 }
