@@ -67,7 +67,6 @@ namespace OOPBank.Tests
             Assert.IsTrue(account.Balance == 50M);
         }
 
-
         [TestMethod]
         [ExpectedException(typeof(ArgumentException), "Transfer failed")]
         public void TestODFail()
@@ -95,11 +94,23 @@ namespace OOPBank.Tests
 
             bank.Withdraw(customer.Checking, 2500M);
 
-            Assert.IsTrue(customer.Savings.Balance ==2500M && customer.Checking.Balance == 0);
+            Assert.IsTrue(customer.Savings.Balance == 2500M && customer.Checking.Balance == 0);
 
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(Exception), "Transfer Failed")]
+        public void TransferFails()
+        {
+            Bank bank = new Bank();
+            var mockCustomer = new Mock<Customer>("Andrea");
+            int x = mockCustomer.Object.ID;
+            Savings savings = new(x);
+            bank.Deposit(savings, 15);
+            Checking checking = new(x);
+            bank.Transfer(savings, checking, 10);
 
+        }
 
     }
 }

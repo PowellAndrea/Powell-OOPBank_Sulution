@@ -46,10 +46,10 @@ namespace OOPBank
                 Savings savings = getCustomer(account.CustomerId).Savings;
                 if (savings.Balance - savings.MIN_Balance > testBalance)
                 {
-                    if (!Transfer(savings, account, Math.Abs(testBalance)))
+                    if (Transfer(savings, account, Math.Abs(testBalance)))
                     {
-                        throw new Exception("Transfer failed");
-                    } else { account.Withdraw(amount); }
+                        account.Withdraw(amount);
+                    }                   
                 }
             }
             else
@@ -60,9 +60,15 @@ namespace OOPBank
 
         public bool Transfer(Account fromAccount, Account toAccount, decimal amount)
         {
-            fromAccount.Withdraw(amount);
-            Deposit(toAccount, amount);
-            return true;
+            if (fromAccount._balance - fromAccount.MIN_Balance >= amount)
+            {
+                Withdraw(fromAccount, amount);
+                Deposit(toAccount, amount);
+                return true;
+            } else
+            {
+                throw new Exception("Transfer failed");
+            }
         }
     }
 }
