@@ -39,9 +39,9 @@
             if (newBalance >= MIN_Balance)
             {
                 _balance = newBalance;
-            } else
+            } else if (!ODProtection)
             {
-                throw new Exception("Insufficent Funds");
+                throw new Exception("Withdraw failed.  Under minimum balance");
             }
         }
 

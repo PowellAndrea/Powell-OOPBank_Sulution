@@ -37,7 +37,7 @@ namespace OOPBank
         public void Withdraw(Account account, decimal amount)
         {
             decimal testBalance = account.Balance - amount;
-            if (testBalance > account.MIN_Balance)
+            if (testBalance >= account.MIN_Balance)
             {   // normal case
                 account.Withdraw(amount);
             }
@@ -46,30 +46,22 @@ namespace OOPBank
                 Savings savings = getCustomer(account.CustomerId).Savings;
                 if (savings.Balance - savings.MIN_Balance > testBalance)
                 {
-                    if (!Transfer(savings, account, testBalance))
+                    if (!Transfer(savings, account, Math.Abs(testBalance)))
                     {
-                        throw new Exception("Transfer failed"); ;
-                    }
-                }
-                else
-                {
-                    throw new Exception("Withdraw faild. Balance under minimum.");
+                        throw new Exception("Transfer failed");
+                    } else { account.Withdraw(amount); }
                 }
             }
-            else throw new Exception("Insufficent Funds");
+            else
+            {
+                throw new Exception("Withdraw failed. Balance under Minimum.");
+            }
         }
 
         public bool Transfer(Account fromAccount, Account toAccount, decimal amount)
         {
-            try
-            {
-                fromAccount.Withdraw(amount); 
-            } catch
-            {
-                // send to debug window?
-                Console.WriteLine("Unable to complete transfer.");
-                return false;
-            }
+            fromAccount.Withdraw(amount);
+            Deposit(toAccount, amount);
             return true;
         }
     }

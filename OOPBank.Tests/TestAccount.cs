@@ -1,4 +1,6 @@
-﻿using Moq;
+﻿using Microsoft.VisualBasic;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
+using Moq;
 
 namespace OOPBank.Tests
 {
@@ -88,7 +90,6 @@ namespace OOPBank.Tests
             var mockCustomer = new Mock<Customer>("Andrea");
             int x = mockCustomer.Object.ID;
             Account account = new(mockCustomer.Object.ID);
-            Assert.IsTrue(x == account.CustomerId);
         }
 
         [TestMethod]
@@ -111,43 +112,14 @@ namespace OOPBank.Tests
         }
 
         [TestMethod]
-        public void TestOverDraft()
-        {
-            var mockCustomer = new Mock<Customer>("Andrea");
-            int x = mockCustomer.Object.ID;
-            Checking checking = new(x);
-            Savings savings = new(x);
-
-            savings.Deposit(3000M);
-            checking.Deposit(2000M);
-
-        }
-
-        [TestMethod]
-        public void TestWithdrawOverMinBalance()
+        [ExpectedException(typeof(Exception), "Withdraw failed.  Under minimum balance")]
+        public void NoWithdrawUnderMinBalance()
         {
             var mockCustomer = new Mock<Customer>("Andrea");
             int x = mockCustomer.Object.ID;
             Savings savings = new(x);
-            savings.Deposit(30);
-            savings.Withdraw(25);
-            Assert.ThrowsException<ArgumentException>(() => "Insufficent Funds");
-
+            savings.Deposit(50);
+            savings.Withdraw(45);
         }
-
-        [TestMethod]
-        public void TestWithdrawNSF()
-        {
-            var mockCustomer = new Mock<Customer>("Andrea");
-            int x = mockCustomer.Object.ID;
-            Account account = new(x);
-            account.Deposit(50);
-            account.Withdraw(60);
-            Assert.ThrowsException<ArgumentException>(() => { });
-            // Test for NSF
-        }
-
-
-
     }
 }

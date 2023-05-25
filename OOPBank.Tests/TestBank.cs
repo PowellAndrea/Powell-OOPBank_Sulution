@@ -55,5 +55,38 @@ namespace OOPBank.Tests
 
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), "Transfer failed")]
+        public void TestODFail()
+        {
+            Bank bank = new Bank();
+            var mockCustomer = new Mock<Customer>("Andrea");
+            Checking checking = new Checking(mockCustomer.Object.ID);
+            Savings savings = new Savings(mockCustomer.Object.ID);
+            mockCustomer.SetupProperty(e => e.Savings, savings);
+            mockCustomer.SetupProperty(e => e.Checking, checking);
+            bank.Deposit(savings, 10M);
+            bank.Deposit(checking, 45M);
+            bank.Withdraw(checking, 50M);
+        }
+
+        [TestMethod]
+        public void TestODSucess()
+        {
+            Bank bank = new Bank();
+            Customer customer = new("Andrea");
+            bank.addCustomer(customer);
+
+            bank.Deposit(customer.Savings, 3000M);
+            bank.Deposit(customer.Checking, 2000M);
+
+            bank.Withdraw(customer.Checking, 2500M);
+
+            Assert.IsTrue(customer.Savings.Balance ==2500M && customer.Checking.Balance == 0);
+
+        }
+
+
+
     }
 }
