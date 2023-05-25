@@ -31,7 +31,7 @@ namespace OOPBank
 
         public Customer getCustomer(int customerID)
         {
-            return _customers.Find(x => x.ID.Equals(customerID));
+            return _customers.Find(x => x.ID == customerID);
         }
 
         public void Deposit(Account account, decimal amount)

@@ -1,7 +1,4 @@
 ﻿using Moq;
-using OOPBank;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Principal;
 
 namespace OOPBank.Tests
 {
@@ -31,8 +28,10 @@ namespace OOPBank.Tests
         {
             Bank bank = new Bank();
             var mockCustomer = new Mock<Customer>("Andrea");
+            int i = mockCustomer.Object.ID;
+            //mockCustomer.SetupProperty(e => e.Id, 1);
             bank.addCustomer(mockCustomer.Object);
-            Assert.IsNotNull(bank.getCustomer(0));
+            Assert.IsNotNull(bank.getCustomer(i).Name == "Andrea");
         }
     }
 }
