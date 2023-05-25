@@ -52,8 +52,21 @@ namespace OOPBank.Tests
             bank.addCustomer(mockCustomer.Object);
             bank.Deposit(account, 10M);
             Assert.IsTrue(account.Balance == 10M);
-
         }
+
+        [TestMethod]
+        public void CanWithdraw()
+        {
+            Bank bank = new Bank();
+            var mockCustomer = new Mock<Customer>("Andrea");
+            int x = mockCustomer.Object.ID;
+            Account account = new(x);
+            bank.Deposit(account, 100M);
+            bank.Withdraw(account, 50M);
+          
+            Assert.IsTrue(account.Balance == 50M);
+        }
+
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException), "Transfer failed")]
