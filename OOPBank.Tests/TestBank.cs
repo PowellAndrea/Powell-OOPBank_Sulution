@@ -109,8 +109,20 @@ namespace OOPBank.Tests
             bank.Deposit(savings, 15);
             Checking checking = new(x);
             bank.Transfer(savings, checking, 10);
-
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception), "Withdraw failed. Balance under Minimum.")]
+        public void WithdrawFailUnderMin()
+        {
+            Bank bank = new Bank();
+            var mockCustomer = new Mock<Customer>("Andrea");
+            int x = mockCustomer.Object.ID;
+            Savings savings = new(x);
+            bank.Deposit(savings, 15);
+            bank.Withdraw(savings, 10);
+        }
+
 
     }
 }
